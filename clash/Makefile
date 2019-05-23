@@ -1,0 +1,60 @@
+include $(TOPDIR)/rules.mk
+
+PKG_NAME:=clash
+PKG_VERSION:=0.14.0
+PKG_RELEASE:=1
+PKG_MAINTAINER:=Anton Chen <contact@antonchen.com>
+
+ifeq ($(ARCH),mipsel)
+	PKG_ARCH:=mipsle
+endif
+ifeq ($(ARCH),mips)
+	PKG_ARCH:=mips64
+endif
+ifeq ($(ARCH),i386)
+	PKG_ARCH:=386
+endif
+ifeq ($(ARCH),x86_64)
+	PKG_ARCH:=amd64
+endif
+ifeq ($(ARCH),arm)
+	PKG_ARCH:=armv6
+endif
+ifeq ($(ARCH),aarch64)
+	PKG_ARCH:=armv8
+endif
+
+PKG_SOURCE:=clash-linux-$(PKG_ARCH).tar.gz
+PKG_SOURCE_URL:=https://github.com/Dreamacro/clash/releases/download/v$(PKG_VERSION)/
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_HASH:=skip
+
+include $(INCLUDE_DIR)/package.mk
+
+define Package/$(PKG_NAME)
+	SECTION:=net
+	CATEGORY:=Network
+	TITLE:=clash is a cross-platform proxy software
+	DEPENDS:=
+	URL:=https://github.com/Dreamacro/clash/releases
+endef
+
+define Package/$(PKG_NAME)/description
+	clash is a cross-platform proxy software
+endef
+
+define Build/Prepare
+	gzip -dc "$(DL_DIR)/$(PKG_SOURCE)" | tar -C $(PKG_BUILD_DIR)/ -xf -
+endef
+
+define Build/Compile
+	echo "$(PKG_NAME) Compile Skiped!"
+endef
+
+define Package/$(PKG_NAME)/install
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/clash-linux-$(PKG_ARCH) $(1)/usr/bin/clash
+endef
+
+
+$(eval $(call BuildPackage,$(PKG_NAME)))
