@@ -48,6 +48,7 @@ AddCron ()
 
 DelCron ()
 {
+    touch $CRON_FILE
     sed -i "/gen-clash-config.sh/d" $CRON_FILE
     sed -i "/update-mmdb.sh/d" $CRON_FILE
     /etc/init.d/cron reload

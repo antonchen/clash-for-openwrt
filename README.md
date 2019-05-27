@@ -41,6 +41,7 @@
 
 ## 依赖
 
+- luci-lib-json
 - libuci-lua
 - coreutils-nohup
 - shadow-su

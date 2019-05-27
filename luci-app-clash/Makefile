@@ -20,7 +20,7 @@ define Package/luci-app-clash
 	CATEGORY:=LuCI
 	SUBMENU:=2. Services
 	TITLE:=LuCI app for clash
-	DEPENDS:=+clash +libuci-lua +coreutils-nohup +shadow-su +iptables-mod-extra +curl
+	DEPENDS:=+clash +luci-lib-json +libuci-lua +coreutils-nohup +shadow-su +iptables-mod-extra +curl
 	PKGARCH:=all
 	MAINTAINER:=Anton
 endef
