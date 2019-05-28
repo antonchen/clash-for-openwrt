@@ -1,4 +1,5 @@
 #!/bin/sh /etc/rc.common
+. /lib/functions/network.sh
 
 START=90
 STOP=15
@@ -11,16 +12,18 @@ CRON_FILE="/etc/crontabs/root"
 
 SetDNS ()
 {
-    local DNSMASQ_DNS CLASH_DNS
+    local DNSMASQ_DNS DNSMASQ_BACKUP CLASH_DNS_PORT
     DNSMASQ_DNS=$(uci get dhcp.@dnsmasq[0].server 2>/dev/null)
+    DNSMASQ_BACKUP=$(uci get clash.@general[0].dnsmasq_backup 2>/dev/null)
     CLASH_DNS_PORT=$(uci get clash.@general[0].dns_port 2>/dev/null)
     [ -z $CLASH_DNS_PORT ] && return
-    if [ ! -z $DNSMASQ_DNS ]; then
+    if [ ! -z $DNSMASQ_DNS ] && [ -z $DNSMASQ_BACKUP ]; then
         uci set clash.@general[0].dnsmasq_backup="$DNSMASQ_DNS"
         uci commit clash
-
-        uci del dhcp.@dnsmasq[-1].server
     fi
+
+    uci set dhcp.@dnsmasq[0].noresolv=1
+    uci del dhcp.@dnsmasq[-1].server
     uci add_list dhcp.@dnsmasq[0].server="127.0.0.1#$CLASH_DNS_PORT"
     uci commit dhcp
     /etc/init.d/dnsmasq restart >/dev/null 2>&1
@@ -56,7 +59,8 @@ DelCron ()
 
 SetFirewall ()
 {
-    local REDIR_PORT EXCLUDE_HOSTS
+    local LAN_SUBNET REDIR_PORT EXCLUDE_HOSTS
+    network_get_subnet LAN_SUBNET lan
     REDIR_PORT=$(uci get clash.@general[0].redir_port 2>/dev/null)
     [ -z $REDIR_PORT ] && return
     EXCLUDE_HOSTS=$(uci get clash.@general[0].exclude_hosts 2>/dev/null)
@@ -80,15 +84,17 @@ SetFirewall ()
     done
 
     iptables -t nat -A clash -p tcp -j REDIRECT --to-ports $REDIR_PORT
-    iptables -t nat -A PREROUTING -p tcp -j clash
+    [ -z $LAN_SUBNET ] || iptables -t nat -A PREROUTING -p tcp -s $LAN_SUBNET ! -d $LAN_SUBNET -j clash
     iptables -t nat -A OUTPUT -p tcp -d 8.8.8.8 -j clash
     iptables -t nat -A OUTPUT -p tcp -m owner ! --uid-owner 1 -j clash
 }
 
 UnSetFirewall ()
 {
+    local LAN_SUBNET
+    network_get_subnet LAN_SUBNET lan
     iptables -t nat -F clash
-    iptables -t nat -D PREROUTING -p tcp -j clash
+    [ -z $LAN_SUBNET ] || iptables -t nat -D PREROUTING -p tcp -s $LAN_SUBNET ! -d $LAN_SUBNET -j clash
     iptables -t nat -D OUTPUT -p tcp -d 8.8.8.8 -j clash
     iptables -t nat -D OUTPUT -p tcp -m owner ! --uid-owner 1 -j clash
     iptables -t nat -X clash

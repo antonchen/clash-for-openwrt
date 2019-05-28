@@ -1,5 +1,5 @@
 redir-port: 7892
-allow-lan: false
+allow-lan: true
 mode: Rule
 log-level: info
 # DNS-START

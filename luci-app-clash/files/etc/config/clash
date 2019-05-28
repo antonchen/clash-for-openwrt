@@ -4,7 +4,7 @@ config general
 	option log_level 'info'
 	option redir_port '9892'
 	option dns_port '5333'
-	option tpl_url 'https://cdn.jsdelivr.net/gh/antonchen/clash-for-openwrt/clash.tpl'
+	option tpl_url 'https://raw.githubusercontent.com/antonchen/clash-for-openwrt/master/clash.tpl'
 
 config subscription
 	option enabled '0'

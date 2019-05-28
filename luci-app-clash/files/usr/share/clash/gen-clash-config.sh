@@ -1,8 +1,9 @@
 #!/bin/sh
 # Author: Anton Chen <contact@antonchen.com>
 # Create Date: 2019-05-06 15:04:48
-# Last Modified: 2019-05-23 14:03:20
+# Last Modified: 2019-05-28 11:17:46
 # Description: 
+. /lib/functions/network.sh
 CONF="/etc/clash/config.yml"
 CONF_TEMP="/tmp/clash-temp.yml"
 CONF_TEMPLATE="/etc/clash/config.tpl"
@@ -70,24 +71,20 @@ if [ -z $LOG_LEVEL ]; then
 else
     echo "log-level: $LOG_LEVEL" >> $CONF_TEMP
 fi
-APT_PORT=$(uci get clash.@general[0].api_port 2>/dev/null)
-if [ ! -z $APT_PORT ]; then
-    LOCAL_ADDR=$(uci get network.lan.ipaddr 2>/dev/null)
-    if [ -z $LOCAL_ADDR ]; then
-        echo "external-controller: 0.0.0.0:$APT_PORT" >> $CONF_TEMP
+API_PORT=$(uci get clash.@general[0].api_port 2>/dev/null)
+if [ ! -z $API_PORT ]; then
+    network_get_ipaddr LAN_ADDR lan
+    if [ -z $LAN_ADDR ]; then
+        echo "external-controller: 0.0.0.0:$API_PORT" >> $CONF_TEMP
     else
-        echo "external-controller: $LOCAL_ADDR:$APT_PORT" >> $CONF_TEMP
+        echo "external-controller: $LAN_ADDR:$API_PORT" >> $CONF_TEMP
     fi
 fi
 SECRET=$(uci get clash.@general[0].secret 2>/dev/null)
 [ -z $SECRET ] && exit
 echo "secret: $SECRET" >> $CONF_TEMP
 
-if [ -z $HTTP_PORT ] || [ -z $SOCKS_PORT ]; then
-    echo 'allow-lan: false' >> $CONF_TEMP
-else
-    echo 'allow-lan: true' >> $CONF_TEMP
-fi
+echo 'allow-lan: true' >> $CONF_TEMP
 
 # Check config template
 TPL_URL=$(uci get clash.@general[0].tpl_url 2>/dev/null)
@@ -96,7 +93,7 @@ updateTemplate ()
 {
     if [ ! -f $CONF_TEMPLATE ]; then
         curl -s -k --connect-timeout 5 -m 5 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36" -o $CONF_TEMPLATE $TPL_URL || exit
-        grep -q 'Proxy-START' $CONF_TEMPLATE
+        grep -q '# Rule-END' $CONF_TEMPLATE
         if [ $? -ne 0 ]; then
             rm -f $CONF_TEMPLATE
             exit 1
