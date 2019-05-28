@@ -24,7 +24,7 @@ ifeq ($(ARCH),aarch64)
 	PKG_ARCH:=armv8
 endif
 
-PKG_SOURCE:=clash-linux-$(PKG_ARCH).tar.gz
+PKG_SOURCE:=clash-linux-$(PKG_ARCH)-v$(PKG_VERSION).gz
 PKG_SOURCE_URL:=https://github.com/Dreamacro/clash/releases/download/v$(PKG_VERSION)/
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 PKG_HASH:=skip
@@ -44,7 +44,8 @@ define Package/$(PKG_NAME)/description
 endef
 
 define Build/Prepare
-	gzip -dc "$(DL_DIR)/$(PKG_SOURCE)" | tar -C $(PKG_BUILD_DIR)/ -xf -
+	# gzip -dc "$(DL_DIR)/$(PKG_SOURCE)" | tar -C $(PKG_BUILD_DIR)/ -xf -
+	gzip -dc "$(DL_DIR)/$(PKG_SOURCE)" > $(PKG_BUILD_DIR)/clash-linux-$(PKG_ARCH)
 endef
 
 define Build/Compile
