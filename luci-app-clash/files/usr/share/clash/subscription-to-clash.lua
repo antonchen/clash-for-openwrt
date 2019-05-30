@@ -1,4 +1,8 @@
 #!/usr/bin/lua
+-- Author: Anton Chen <contact@antonchen.com>
+-- Create Date: 2019-05-06 10:32:52
+-- Last Modified: 2019-05-30 21:04:33
+-- Description:
 local uci = require("uci")
 local sys = require "luci.sys"
 local json = require "luci.json"
@@ -170,6 +174,11 @@ if tonumber(uci_instance.get("clash", "@general[0]", "enabled")) == 1 and tonumb
     local include_rules = uci_instance.get("clash", "@subscription[0]", "include")
     local exclude_rules = uci_instance.get("clash", "@subscription[0]", "exclude")
     local node_list = subscription_get(subscription_url)
+
+    -- 为空时退出
+    if table.getn(node_list) == 0 then
+        return
+    end
 
     local proxy_file = io.open(proxy_output, "w+")
     for _, link in pairs(node_list) do

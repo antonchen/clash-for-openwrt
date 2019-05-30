@@ -1,4 +1,8 @@
 #!/bin/sh /etc/rc.common
+# Author: Anton Chen <contact@antonchen.com>
+# Create Date: 2019-05-07 12:01:40
+# Last Modified: 2019-05-30 21:05:51
+# Description:
 . /lib/functions/network.sh
 
 START=90
@@ -107,9 +111,18 @@ start(){
         touch $CLASH_LOG && chown $RUNNING_USER:$RUNNING_USER $CLASH_LOG
         [ -f /etc/clash/Country.mmdb ] || /usr/share/clash/update-mmdb.sh
         su $RUNNING_USER -s /bin/ash -m -c "nohup $CLASH -d $CONF > $CLASH_LOG 2>&1 &"
-        SetFirewall
-        SetDNS
-        AddCron
+        sleep 1
+        PIDs=$(pidof clash)
+        if [ -z $PIDs ]; then
+            echo "Start clash failure." > $CLASH_LOG
+            UnSetFirewall > /dev/null 2>&1
+            UnSetDNS
+            DelCron
+        else
+            SetFirewall
+            SetDNS
+            AddCron
+        fi
     fi
 }
 
