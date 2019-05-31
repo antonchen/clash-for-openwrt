@@ -34,10 +34,6 @@ Rule:
 # Global Area Network
 # (StreamMedia)
 # (Video)
-# > Youtube
-- DOMAIN-SUFFIX,googlevideo.com,StreamMedia
-- DOMAIN-SUFFIX,youtube.com,StreamMedia
-- DOMAIN,youtubei.googleapis.com,StreamMedia
 # > Netflix
 - DOMAIN-SUFFIX,netflix.com,StreamMedia
 - DOMAIN-SUFFIX,netflix.net,StreamMedia
