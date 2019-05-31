@@ -5,6 +5,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: applications/luci-app-clash/luasrc/model/cbi/clash/general.lua:52
+msgid "* API Port"
+msgstr "* API 端口"
+
 #: applications/luci-app-clash/luasrc/model/cbi/clash/general.lua:76
 msgid "* DNS Port"
 msgstr "* DNS 端口"
@@ -16,10 +20,6 @@ msgstr "* Redir 端口"
 #: applications/luci-app-clash/luasrc/model/cbi/clash/subscription.lua:18
 msgid "* Subcription Url"
 msgstr "* 订阅地址"
-
-#: applications/luci-app-clash/luasrc/model/cbi/clash/general.lua:52
-msgid "API Port"
-msgstr "API 端口"
 
 #: applications/luci-app-clash/luasrc/view/clash/status.htm:16
 msgid "AVAILABLE"

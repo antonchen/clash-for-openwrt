@@ -1,6 +1,10 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: applications/luci-app-clash/luasrc/model/cbi/clash/general.lua:52
+msgid "* API Port"
+msgstr ""
+
 #: applications/luci-app-clash/luasrc/model/cbi/clash/general.lua:76
 msgid "* DNS Port"
 msgstr ""
@@ -11,10 +15,6 @@ msgstr ""
 
 #: applications/luci-app-clash/luasrc/model/cbi/clash/subscription.lua:18
 msgid "* Subcription Url"
-msgstr ""
-
-#: applications/luci-app-clash/luasrc/model/cbi/clash/general.lua:52
-msgid "API Port"
 msgstr ""
 
 #: applications/luci-app-clash/luasrc/view/clash/status.htm:16

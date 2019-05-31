@@ -2,6 +2,7 @@
 config general
 	option enabled '0'
 	option log_level 'info'
+	option api_port '9870'
 	option redir_port '9892'
 	option dns_port '5333'
 	option tpl_url 'https://raw.githubusercontent.com/antonchen/clash-for-openwrt/master/clash.tpl'

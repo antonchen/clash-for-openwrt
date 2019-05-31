@@ -49,10 +49,10 @@ o.default = rndLetter(10)
 o.rmempty = false
 o.description = translate("Secret for RESTful API")
 
-o = s:option(Value, "api_port", translate("API Port"))
-o.default = ""
+o = s:option(Value, "api_port", translate("* API Port"))
+o.default = 9870
 o.datatype = "port"
-o.rmempty = true
+o.rmempty = false
 o.description = translate("If the value is empty disabled")
 
 o = s:option(Value, "http_port", translate("HTTP Port"))

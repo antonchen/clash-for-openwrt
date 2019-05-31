@@ -1,7 +1,7 @@
 #!/bin/sh
 # Author: Anton Chen <contact@antonchen.com>
 # Create Date: 2019-05-06 15:04:48
-# Last Modified: 2019-05-28 11:17:46
+# Last Modified: 2019-05-31 14:05:18
 # Description: 
 . /lib/functions/network.sh
 CONF="/etc/clash/config.yml"
@@ -156,4 +156,10 @@ if [ $? -ne 0 ]; then
 fi
 awk '/# Rule-START/,/# Rule-END/{if(i>1)print x;x=$0;i++}' $CONF_TEMPLATE|sed '/^Rule:/d' >> $CONF_TEMP
 
+# Sync new config
 cat $CONF_TEMP > $CONF
+
+# Reload
+if [ "X$1" == "Xcron" ]; then
+    /etc/init.d/clash reload
+fi

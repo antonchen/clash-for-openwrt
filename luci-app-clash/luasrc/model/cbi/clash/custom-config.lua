@@ -65,7 +65,7 @@ end
 --- Submit
 local submit = http.formvalue("cbi.submit")
 if submit then
-    os.execute("sleep 5;/etc/init.d/clash restart >/dev/null 2>&1 &")
+    os.execute("/etc/init.d/clash restart >/dev/null 2>&1 &")
 end
 
 return b, c, d, e
