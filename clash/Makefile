@@ -2,26 +2,32 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=clash
 PKG_VERSION:=0.14.0
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PKG_MAINTAINER:=Anton Chen <contact@antonchen.com>
 
-ifeq ($(ARCH),mipsel)
-	PKG_ARCH:=mipsle
-endif
-ifeq ($(ARCH),mips)
-	PKG_ARCH:=mips64
-endif
 ifeq ($(ARCH),i386)
 	PKG_ARCH:=386
 endif
 ifeq ($(ARCH),x86_64)
 	PKG_ARCH:=amd64
 endif
-ifeq ($(ARCH),arm)
-	PKG_ARCH:=armv6
+ifeq ($(ARCH),mipsel)
+	PKG_ARCH:=mipsle
+endif
+ifeq ($(ARCH),mips)
+	PKG_ARCH:=mips64
 endif
 ifeq ($(ARCH),aarch64)
 	PKG_ARCH:=armv8
+endif
+ifeq ($(ARCH),arm)
+	PKG_ARCH:=armv6
+	ifneq ($(BOARD),bcm53xx)
+		PKG_ARCH:=armv7
+	endif
+	ifeq ($(BOARD),kirkwood)
+		PKG_ARCH:=armv5
+	endif
 endif
 
 PKG_SOURCE:=clash-linux-$(PKG_ARCH)-v$(PKG_VERSION).gz
