@@ -1,7 +1,7 @@
 #!/bin/sh /etc/rc.common
 # Author: Anton Chen <contact@antonchen.com>
 # Create Date: 2019-05-07 12:01:40
-# Last Modified: 2019-05-31 14:04:02
+# Last Modified: 2019-07-16 20:26:13
 # Description:
 . /lib/functions/network.sh
 
@@ -63,7 +63,8 @@ DelCron ()
 
 SetFirewall ()
 {
-    local LAN_SUBNET REDIR_PORT EXCLUDE_HOSTS
+    local LAN_SUBNET WAN_ADDR REDIR_PORT EXCLUDE_HOSTS
+    network_get_ipaddr WAN_ADDR wan
     network_get_subnet LAN_SUBNET lan
     REDIR_PORT=$(uci get clash.@general[0].redir_port 2>/dev/null)
     [ -z $REDIR_PORT ] && return
@@ -73,6 +74,7 @@ SetFirewall ()
     uci commit firewall
     /etc/init.d/firewall restart >/dev/null 2>&1
     iptables -t nat -N clash
+    [ -z $WAN_ADDR ] || iptables -t nat -A clash -d $WAN_ADDR -j RETURN
     iptables -t nat -A clash -d 0.0.0.0/8 -j RETURN
     iptables -t nat -A clash -d 10.0.0.0/8 -j RETURN
     iptables -t nat -A clash -d 127.0.0.0/8 -j RETURN
