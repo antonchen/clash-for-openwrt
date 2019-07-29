@@ -35,22 +35,8 @@ Rule:
 # (StreamMedia)
 # (Video)
 # > Netflix
-- DOMAIN-SUFFIX,netflix.com,StreamMedia
-- DOMAIN-SUFFIX,netflix.net,StreamMedia
-- DOMAIN-SUFFIX,nflxext.com,StreamMedia
-- DOMAIN-SUFFIX,nflximg.com,StreamMedia
-- DOMAIN-SUFFIX,nflximg.net,StreamMedia
-- DOMAIN-SUFFIX,nflxso.net,StreamMedia
-- DOMAIN-SUFFIX,nflxvideo.net,StreamMedia
-- DOMAIN-SUFFIX,netflixdnstest1.com,StreamMedia
-- DOMAIN-SUFFIX,netflixdnstest2.com,StreamMedia
-- DOMAIN-SUFFIX,netflixdnstest3.com,StreamMedia
-- DOMAIN-SUFFIX,netflixdnstest4.com,StreamMedia
-- DOMAIN-SUFFIX,netflixdnstest5.com,StreamMedia
-- DOMAIN-SUFFIX,netflixdnstest6.com,StreamMedia
-- DOMAIN-SUFFIX,netflixdnstest7.com,StreamMedia
-- DOMAIN-SUFFIX,netflixdnstest8.com,StreamMedia
-- DOMAIN-SUFFIX,netflixdnstest9.com,StreamMedia
+- DOMAIN-KEYWORD,netflix,StreamMedia
+- DOMAIN-KEYWORD,nflx,StreamMedia
 - IP-CIDR,23.246.0.0/18,StreamMedia
 - IP-CIDR,37.77.184.0/21,StreamMedia
 - IP-CIDR,45.57.0.0/17,StreamMedia
