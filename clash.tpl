@@ -11,7 +11,7 @@ dns:
   nameserver:
     - 119.29.29.29:53
   fallback:
-    - tcp://8.8.8.8:53
+    - tls://dns.google:853
 # DNS-END
 
 Proxy:
